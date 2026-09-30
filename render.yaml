@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: 15113-hw4-backend
-    runtime: python
-    plan: free
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
-    healthCheckPath: /health
