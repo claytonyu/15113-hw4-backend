@@ -5,7 +5,7 @@ A to-do list web app should have users sign in, manage their own tasks, and sync
 
 ## Architecture
 - Frontend: Web-app. (separately hosted on GitHub Pages, calls the backend API). Do not work on this part, we are only working on the backend here.
-- Backend: Python w/ Flask API, deployed on Render with gunicorn.
+- Backend: Python 3.14 w/ Flask API, deployed on Render with gunicorn.
 - Database: Render Postgres, set up through the Render web dashboard.
   - Setup: Dashboard → New → Postgres. Free plan, **same region as the web service**.
   - Copy the database's **Internal Database URL** into the web service's Environment tab as `DATABASE_URL`. The internal URL only works from inside Render, which is what we want.
@@ -40,7 +40,8 @@ Users authenticate with a Canvas **personal access token (PAT)**. The frontend t
 **Session tokens:** 32 random bytes (`secrets.token_urlsafe`), stored as a SHA-256 hash, expire after 7 days. These are opaque tokens rather than JWTs so logout can revoke them immediately.
 
 **Logout vs. disconnect:**
-- **Log out** ends the current session only. The stored PAT and all user data stay, so logging in again doesn't need a new PAT. (Canvas shows a PAT only once at creation, so most users couldn't re-enter the old one.)
+- **Log out** ends the current session only. The stored PAT and all user data stay, and other sessions keep working.
+- **Logging back in** (after logout or session expiry) always needs a PAT, since it is the only login credential. Canvas shows a PAT only once at creation, so most users will create a new one. The new PAT maps to the same Canvas user id, so all data is restored.
 - **Disconnect Canvas** deletes the stored PAT and all of the user's sessions. All tasks, courses and ignore decisions stay. Submitting a new PAT for the same Canvas account restores access to them.
 - Deleting the PAT from the backend does **not** revoke it in Canvas. The frontend should tell users to delete it under Canvas → Account → Settings.
 
