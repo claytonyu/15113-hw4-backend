@@ -58,6 +58,9 @@ def http_error(error):
 def canvas_unavailable(_error):
     return jsonify(error="Could not reach Canvas. Please try again later."), 502
 
+@app.get("/")
+def home():
+    return "The Canvas To-Do app is running!"
 
 @app.get("/health")
 def health():
