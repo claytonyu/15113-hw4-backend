@@ -108,4 +108,5 @@ This is very important. Make sure to check this after making any changes regardi
 ## Open Issues
 - **School policy:** some institutions restrict sharing Canvas PATs with third-party apps. Check CMU's Canvas policy before real users submit tokens.
 - **Cold starts:** free Render services sleep after 15 minutes idle, so the first request (including login) can take about a minute.
-- Write tests 
+- Write tests
+- **Canvas submission completion:** `completed` is currently a purely local, user-set field with no Canvas equivalent synced. In the future, consider checking Canvas submission status (`GET /api/v1/courses/:course_id/assignments/:id/submissions/self`) to reflect whether an assignment was actually submitted on Canvas.
