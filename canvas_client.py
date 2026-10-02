@@ -4,6 +4,7 @@ import requests
 
 TIMEOUT_SECONDS = 15
 
+CANVAS_BASE_URL = "https://canvas.cmu.edu"
 
 class CanvasAuthError(Exception):
     """The user's Canvas PAT is missing, unreadable, or was rejected by Canvas."""
@@ -13,7 +14,7 @@ class CanvasClient:
     """Thin wrapper around the few Canvas REST endpoints this app needs."""
 
     def __init__(self, pat):
-        self._base_url = os.environ["CANVAS_BASE_URL"].rstrip("/")
+        self._base_url = CANVAS_BASE_URL.rstrip("/")
         self._headers = {"Authorization": f"Bearer {pat}"}
 
     def _get(self, url, params=None):

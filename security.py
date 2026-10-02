@@ -45,6 +45,10 @@ def _bearer_token():
 
 def authenticate():
     """Loads the session from the Bearer token into g.session and g.user, or aborts with 401."""
+    if request.method == "OPTIONS":
+        # CORS preflight requests carry no Authorization header; let Flask-CORS
+        # answer them instead of rejecting them here before the real request is sent.
+        return
     token = _bearer_token()
     session = token and db.session.scalar(
         db.select(Session).where(

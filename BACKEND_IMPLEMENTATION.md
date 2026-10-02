@@ -191,7 +191,6 @@ This is `403` instead of `401` on purpose: `401` means "log in again", while `ca
 |---|---|
 | `DATABASE_URL` | Postgres URL. Use the Internal URL on Render and the External URL locally. `postgresql://` is rewritten to `postgresql+psycopg://` automatically. |
 | `ENCRYPTION_KEY` | Fernet key. Changing it makes stored PATs unreadable, so users get `canvas_token_required` and have to resubmit. |
-| `CANVAS_BASE_URL` | e.g. `https://canvas.cmu.edu` |
 | `FRONTEND_URL` | Scheme and host only, e.g. `https://<username>.github.io`. |
 
 - **Start command:** `gunicorn app:app`. The build installs `requirements.txt`.

@@ -103,7 +103,6 @@ This is very important. Make sure to check this after making any changes regardi
 - Environment variables (set in the Render dashboard):
   - `DATABASE_URL`: Render Postgres internal URL
   - `ENCRYPTION_KEY`: Fernet key for PATs. Losing or changing it makes stored PATs unreadable, so users would need to submit new ones.
-  - `CANVAS_BASE_URL`: e.g. `https://canvas.cmu.edu`
   - `FRONTEND_URL`: e.g. `https://<username>.github.io`, used for CORS. The CORS origin is scheme + host only, with no path.
 
 ## Open Issues
