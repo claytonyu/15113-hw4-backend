@@ -3,7 +3,7 @@
 ## Overview
 This backend acts as a middleman between the front-end display and the Canvas API & Database.
 
-It queries courses and assignments from a user from Canvas, and displays them as tasks to do on the webapp. The user can edit these tasks and create custom tasks, and these are all saved in a Render Postgres Database. The user can also ignore tasks or courses from appearing on the main page.
+It queries courses and assignments from a user from Canvas, and displays them as tasks to do on the webapp. The user can edit these tasks and create custom tasks, and these are all saved in a Neon Postgres Database. The user can also ignore tasks or courses from appearing on the main page.
 
 Also see the [prompt log](PROMPT_LOG.md)!
 
@@ -42,10 +42,10 @@ Once seen, the user can choose to keep or ignore a course / task from appearing 
 
 ## Setup & Running Locally
 
-The backend requires Python 3.14 and a Render Postgres database, with the packages found in the `requirements.txt`.
+The backend requires Python 3.14 and a Neon Postgres database, with the packages found in the `requirements.txt`.
 
 ### Environment Variables Required
-- `DATABASE_URL` - the Postgres connection URL provided by Render.
+- `DATABASE_URL` - the Neon *direct* (non-pooled) connection string, e.g. `postgresql://user:pass@ep-xxx.region.aws.neon.tech/neondb?sslmode=require`.
 - `ENCRYPTION_KEY` - A Fernet key used to encrypt Canvas PAT tokens. Generated once.
 - `FRONTEND_URL` - The frontend's origin, used for CORS.
 

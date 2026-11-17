@@ -6,12 +6,12 @@ A to-do list web app should have users sign in, manage their own tasks, and sync
 ## Architecture
 - Frontend: Web-app. (separately hosted on GitHub Pages, calls the backend API). Do not work on this part, we are only working on the backend here.
 - Backend: Python 3.14 w/ Flask API, deployed on Render with gunicorn.
-- Database: Render Postgres, set up through the Render web dashboard.
-  - Setup: Dashboard → New → Postgres. Free plan, **same region as the web service**.
-  - Copy the database's **Internal Database URL** into the web service's Environment tab as `DATABASE_URL`. The internal URL only works from inside Render, which is what we want.
-  - Use the **External Database URL** only for local development or for inspecting data with `psql` or a GUI client. Render's dashboard doesn't have a table browser.
+- Database: Neon Postgres, set up through the Neon console.
+  - Setup: Neon console → New project. Free plan, Postgres 17 (or latest), **region closest to the Render web service**.
+  - Connect → turn **Connection pooling off** to get the direct connection string (host without `-pooler`). Put it in the web service's Environment tab as `DATABASE_URL`, and in `.env` for local development. The pooled endpoint rejects the `options=-c timezone=UTC` startup parameter that the app sends.
+  - Neon's console has a Tables view and SQL editor for inspecting data.
   - Flask connects through SQLAlchemy (Flask-SQLAlchemy + `psycopg`). Tables get created at app startup with `db.create_all()`, since free web services have no shell or pre-deploy command for running migrations.
-  - Free Render Postgres expires 30 days after creation, with a 14-day grace period before deletion. Expect to recreate it, or upgrade, if the app has to last longer.
+  - Neon's free plan doesn't expire. Compute suspends after about 5 minutes idle, so the first query after a pause takes about a second longer; `pool_pre_ping` handles the dropped connections.
 
 ## Coding Style
 You are a senior software architect. Strictly adhere to these principles:
@@ -101,7 +101,7 @@ This is very important. Make sure to check this after making any changes regardi
 ### 7. Deployment & Config
 - Hosting: frontend on GitHub Pages, backend on Render.
 - Environment variables (set in the Render dashboard):
-  - `DATABASE_URL`: Render Postgres internal URL
+  - `DATABASE_URL`: Neon direct (non-pooled) connection string
   - `ENCRYPTION_KEY`: Fernet key for PATs. Losing or changing it makes stored PATs unreadable, so users would need to submit new ones.
   - `FRONTEND_URL`: e.g. `https://<username>.github.io`, used for CORS. The CORS origin is scheme + host only, with no path.
 

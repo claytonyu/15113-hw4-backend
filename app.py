@@ -19,7 +19,7 @@ from routes import auth, canvas, tasks
 
 
 def _database_url():
-    # Render hands out postgresql:// URLs; SQLAlchemy needs to be told to use psycopg 3.
+    # Neon hands out postgresql:// URLs; SQLAlchemy needs to be told to use psycopg 3.
     return os.environ["DATABASE_URL"].replace("postgresql://", "postgresql+psycopg://", 1)
 
 
@@ -32,7 +32,8 @@ def _allowed_origins():
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = _database_url()
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-    "pool_pre_ping": True,  # Render closes idle connections
+    "pool_pre_ping": True,  # Neon suspends idle computes and drops their connections
+    # Sent as a startup option, which Neon's pooled (-pooler) endpoint rejects, so DATABASE_URL must be the direct endpoint.
     # Return timestamptz values in UTC so responses and recurrence math don't depend on the DB's TimeZone.
     "connect_args": {"options": "-c timezone=UTC"},
 }
